@@ -1,0 +1,147 @@
+<div class="user-details-component">
+  <div class="component-header">
+    <div class="header-icon">🔍</div>
+    <h4>פרטי משתמש</h4>
+  </div>
+
+  @if (isLoading()) {
+  <div class="loading-state" [class.animate-pulse]="true">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <div class="loading-text">
+        <h5>טוען פרטים...</h5>
+      </div>
+    </div>
+  </div>
+  } @if (error() && !isLoading()) {
+  <div class="error-state" [class.animate-slideIn]="true">
+    <div class="error-icon">❌</div>
+    <div class="error-content">
+      <h5>שגיאה בטעינת פרטי המשתמש</h5>
+      <p>{{ error().message || error() }}</p>
+    </div>
+  </div>
+  } @if (userDetails() && !isLoading()) {
+  <div class="details-display" [class.animate-fadeIn]="true">
+    <div class="details-header">
+      <div class="user-avatar">
+        <div class="avatar-text">{{ getUserInitial() }}</div>
+      </div>
+      <div class="user-basic">
+        <h5>{{ userDetails()!.name }}</h5>
+        <p>מזהה: {{ userDetails()!.id }}</p>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-section contact">
+        <div class="section-header">
+          <div class="section-icon">📞</div>
+          <h6>פרטי התקשרות</h6>
+        </div>
+        <div class="detail-item">
+          <span class="label">אימייל:</span>
+          <span class="value email">{{ userDetails()!.email }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">טלפון:</span>
+          <span class="value phone">{{ userDetails()!.phone }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section address">
+        <div class="section-header">
+          <div class="section-icon">🏠</div>
+          <h6>כתובת</h6>
+        </div>
+        <div class="detail-item">
+          <span class="label">רחוב:</span>
+          <span class="value">{{ userDetails()!.address.street }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">עיר:</span>
+          <span class="value">{{ userDetails()!.address.city }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">מיקוד:</span>
+          <span class="value">{{ userDetails()!.address.zipCode }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section account">
+        <div class="section-header">
+          <div class="section-icon">👥</div>
+          <h6>פרטי חשבון</h6>
+        </div>
+        <div class="detail-item">
+          <span class="label">תאריך הצטרפות:</span>
+          <span class="value">{{ formatDate(userDetails()!.joinDate) }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">כניסה אחרונה:</span>
+          <span class="value">{{ formatDateTime(userDetails()!.lastLogin) }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section preferences">
+        <div class="section-header">
+          <div class="section-icon">⚙️</div>
+          <h6>העדפות</h6>
+        </div>
+        <div class="detail-item">
+          <span class="label">ניוזלטר:</span>
+          <span class="value preference" [class.enabled]="userDetails()!.preferences.newsletter">
+            {{ userDetails()!.preferences.newsletter ? '✅ כן' : '❌ לא' }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="label">התראות:</span>
+          <span class="value preference" [class.enabled]="userDetails()!.preferences.notifications">
+            {{ userDetails()!.preferences.notifications ? '✅ כן' : '❌ לא' }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="label">עיצוב:</span>
+          <span class="value theme">
+            {{ userDetails()!.preferences.theme === 'light' ? '☀️ בהיר' : '🌙 כהה' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="detail-section statistics highlight">
+        <div class="section-header">
+          <div class="section-icon">📊</div>
+          <h6>סטטיסטיקות</h6>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ userDetails()!.statistics.totalOrders }}</div>
+            <div class="stat-label">הזמנות</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">₪{{ userDetails()!.statistics.totalSpent.toFixed(2) }}</div>
+            <div class="stat-label">סה"כ הוצאות</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">
+              ₪{{ userDetails()!.statistics.averageOrderValue.toFixed(2) }}
+            </div>
+            <div class="stat-label">ממוצע להזמנה</div>
+          </div>
+          <div class="stat-item full-width">
+            <div class="stat-value">{{ userDetails()!.statistics.favoriteCategory }}</div>
+            <div class="stat-label">קטגוריה מועדפת</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @if (!selectedUserId()) {
+  <div class="empty-state" [class.animate-slideIn]="true">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-content">
+      <h5>בחר משתמש לראות פרטים</h5>
+    </div>
+  </div>
+  }
+</div>

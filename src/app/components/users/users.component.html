@@ -1,0 +1,162 @@
+<div class="users-component">
+  <div class="component-header">
+    <h3>ניהול משתמשים</h3>
+  </div>
+
+  <div class="layout-container">
+    <div class="left-panel">
+      <div class="users-section">
+        <h4>רשימת משתמשים</h4>
+
+        @if (loading()) {
+        <div class="loading">טוען נתונים...</div>
+        } @if (error()) {
+        <div class="error">
+          שגיאה: {{ error().message || error() }}
+          <button (click)="clearError()">✕</button>
+        </div>
+        }
+
+        <div class="users-list scrollable-list">
+          @for (user of users(); track user.id) {
+          <div class="user-item" [class.selected]="selectedUser()?.id === user.id">
+            <div class="user-info">
+              <div class="user-avatar">{{ user.name.charAt(0) }}</div>
+              <div class="user-name">{{ user.name }}</div>
+            </div>
+            <div class="user-actions">
+              <button
+                (click)="selectUser(user.id)"
+                class="btn"
+                [disabled]="selectedUser()?.id === user.id"
+              >
+                {{ selectedUser()?.id === user.id ? 'נבחר' : 'בחר' }}
+              </button>
+              <button
+                (click)="editUser(user)"
+                class="btn"
+                [disabled]="isEditing() && editingUser()?.id === user.id"
+              >
+                ערוך
+              </button>
+              <button (click)="deleteUser(user.id)" class="btn danger">מחק</button>
+            </div>
+          </div>
+          }
+        </div>
+
+        @if (selectedUser()) {
+        <button (click)="clearUserSelection()" class="btn clear-selection-btn">בטל בחירה</button>
+        }
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="top-section">
+        @if (isEditing()) {
+        <div class="form-section">
+          <h4>עריכת משתמש</h4>
+          <div class="form-group">
+            <label>מזהה</label>
+            <input type="number" [(ngModel)]="editingUser()!.id" readonly />
+          </div>
+          <div class="form-group">
+            <label>שם</label>
+            <input type="text" [(ngModel)]="editingUser()!.name" />
+          </div>
+          <div class="form-actions">
+            <button (click)="saveUser()" class="btn primary">שמור</button>
+            <button (click)="cancelEdit()" class="btn">בטל</button>
+          </div>
+        </div>
+        } @else {
+        <div class="form-section">
+          <h4>הוספת משתמש חדש</h4>
+          <div class="form-group">
+            <label>שם</label>
+            <input type="text" [(ngModel)]="newUser().name" placeholder="שם המשתמש" />
+          </div>
+          <div class="form-actions">
+            <button (click)="saveUser()" class="btn primary">הוסף</button>
+          </div>
+        </div>
+        } @if (selectedUser() && !isEditing()) {
+        <div class="form-section add-order-form">
+          <h4>הוספת הזמנה למשתמש</h4>
+          <div class="form-group">
+            <label>סכום ההזמנה (₪)</label>
+            <input
+              type="number"
+              [(ngModel)]="newOrderAmount"
+              placeholder="הכנס סכום"
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div class="form-actions">
+            <button (click)="addOrder()" class="btn primary">הוסף הזמנה</button>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="bottom-section">
+        @if (selectedUser()) { @if (userDetailsLoading()) {
+        <div class="user-details-loading">
+          <div class="loading-spinner"></div>
+          <p>טוען פרטי משתמש...</p>
+        </div>
+        } @else if (selectedUserSummary().userName) {
+        <div class="user-summary">
+          <h4>סיכום המשתמש הנבחר</h4>
+          <p><strong>שם:</strong> {{ selectedUserSummary().userName }}</p>
+          <p><strong>הזמנות:</strong> {{ selectedUserSummary().ordersCount }}</p>
+          <p><strong>סה"כ:</strong> ₪{{ selectedUserSummary().totalOrdersSum.toFixed(2) }}</p>
+        </div>
+
+        <div class="orders-details">
+          <h4>פירוט הזמנות</h4>
+          @if (selectedUserOrders().length > 0) {
+          <div class="orders-list scrollable-orders">
+            @for (order of selectedUserOrders(); track order.id) {
+            <div class="order-item">
+              <div class="order-header">
+                <div class="order-info">
+                  <span class="order-id">הזמנה #{{ order.id }}</span>
+                  <span class="order-date">{{ formatDate(order.orderDate) }}</span>
+                  <span class="order-status" [class]="'status-' + order.status">
+                    {{ getStatusText(order.status) }}
+                  </span>
+                </div>
+                <div class="order-total">₪{{ order.total.toFixed(2) }}</div>
+              </div>
+
+              <div class="order-items">
+                @for (item of order.items; track item.id) {
+                <div class="order-item-detail">
+                  <span class="item-name">{{ item.productName }}</span>
+                  <span class="item-category">{{ item.category }}</span>
+                  <span class="item-quantity">כמות: {{ item.quantity }}</span>
+                  <span class="item-price">₪{{ item.price.toFixed(2) }}</span>
+                  <span class="item-total">₪{{ (item.price * item.quantity).toFixed(2) }}</span>
+                </div>
+                }
+              </div>
+            </div>
+            }
+          </div>
+          } @else {
+          <p class="no-orders">אין הזמנות למשתמש זה</p>
+          }
+        </div>
+        } } @else {
+        <div class="no-selection">
+          <div class="no-selection-icon">📋</div>
+          <h4>בחר משתמש לצפייה בפרטים</h4>
+          <p>בחר משתמש מהרשימה כדי לראות את הפרטים והזמנות שלו</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

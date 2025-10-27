@@ -1,0 +1,27 @@
+<div class="user-orders-container">
+  <div class="header">
+    <h2>ניהול משתמשים והזמנות</h2>
+  </div>
+
+  <div class="user-selection">
+    <h3>בחירת משתמש</h3>
+    <div class="user-buttons">
+      @for (user of allUsers(); track user.id) {
+      <button
+        (click)="selectUser(user.id)"
+        class="user-btn"
+        [class.selected]="selectedUser()?.id === user.id"
+      >
+        {{ user.name }}
+      </button>
+      }
+    </div>
+    <button (click)="clearSelection()" class="clear-btn">בטל בחירה</button>
+  </div>
+
+  <div class="components-display">
+    <app-user-name></app-user-name>
+    <app-user-orders-summary></app-user-orders-summary>
+    <app-user-details></app-user-details>
+  </div>
+</div>

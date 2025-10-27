@@ -1,0 +1,70 @@
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">👥</div>
+        <div class="logo-text">
+          <h1>מערכת ניהול משתמשים</h1>
+          <p>Angular + NgRx | נהוראי פסח</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>מערכת פעילה</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="content-section" id="user-management">
+      <div class="section-header">
+        <div class="section-icon">👥</div>
+        <div class="section-title">
+          <h2>ניהול משתמשים</h2>
+          <p>הוספה, עריכה ומחיקה של משתמשים במערכת</p>
+        </div>
+      </div>
+      <div class="section-content">
+        <app-users />
+      </div>
+    </section>
+
+    <div class="section-divider">
+      <div class="divider-line"></div>
+      <div class="divider-icon">⚡</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <section class="content-section" id="user-orders">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div class="section-title">
+          <h2>פרטי משתמש והזמנות</h2>
+          <p>צפייה בפרטי משתמש, הזמנות וביטול API אוטומטי</p>
+        </div>
+      </div>
+      <div class="section-content">
+        <app-user-orders />
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="tech-stack">
+        <span class="tech-item">Angular 20</span>
+        <span class="tech-separator">•</span>
+        <span class="tech-item">NgRx 20</span>
+        <span class="tech-separator">•</span>
+        <span class="tech-item">RxJS Signals</span>
+        <span class="tech-separator">•</span>
+        <span class="tech-item">TypeScript</span>
+      </div>
+      <div class="footer-note">
+        <span>🚀 דמו למערכת ניהול משתמשים מתקדמת | ע"י נהוראי פסח</span>
+      </div>
+    </div>
+  </footer>
+</div>

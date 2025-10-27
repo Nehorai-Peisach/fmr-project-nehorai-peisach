@@ -1,0 +1,23 @@
+<div class="user-name-component">
+  <div class="component-header">
+    <div class="header-icon">👤</div>
+    <h4>משתמש נבחר</h4>
+  </div>
+
+  @if (selectedUser()) {
+  <div class="user-display">
+    <div class="user-avatar">
+      <span class="avatar-text">{{ selectedUser()!.name.charAt(0).toUpperCase() }}</span>
+    </div>
+    <div class="user-info">
+      <div class="user-name">{{ selectedUser()!.name }}</div>
+      <div class="user-id">מזהה: {{ selectedUser()!.id }}</div>
+    </div>
+  </div>
+  } @else {
+  <div class="empty-state">
+    <div class="empty-icon">👤</div>
+    <p>בחר משתמש מהרשימה</p>
+  </div>
+  }
+</div>

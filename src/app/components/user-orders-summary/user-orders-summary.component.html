@@ -1,0 +1,40 @@
+<div class="orders-summary-component">
+  <div class="component-header">
+    <div class="header-icon">📦</div>
+    <h4>סיכום הזמנות</h4>
+  </div>
+
+  @if (userSummary().userName) {
+  <div class="summary-content">
+    <div class="summary-header">
+      <div class="user-name">{{ userSummary().userName }}</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ userSummary().ordersCount }}</div>
+        <div class="stat-label">הזמנות</div>
+      </div>
+
+      <div class="stat-card featured">
+        <div class="stat-value">₪{{ userSummary().totalOrdersSum.toFixed(2) }}</div>
+        <div class="stat-label">סה"כ</div>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+      <div class="progress-info">
+        <span>{{ getProgressPercentage() }}% מיעד ₪1,000</span>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div class="empty-state">
+    <div class="empty-icon">📊</div>
+    <p>בחר משתמש לצפייה בסיכום</p>
+  </div>
+  }
+</div>
